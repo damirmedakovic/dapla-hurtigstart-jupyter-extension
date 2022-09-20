@@ -1,0 +1,21 @@
+{
+  "template": "https://github.com/jupyterlab/extension-cookiecutter-ts",
+  "commit": "1218eb16f1ebfec50c274c5ec2a0aedbc7ffbbd4",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "kind": "frontend",
+      "author_name": "Miles Winther",
+      "author_email": "mmw@ssb.no",
+      "labextension_name": "dapla-hurtigstart",
+      "python_name": "dapla_hurtigstart",
+      "project_short_description": "Get started quickly and easily with a new statistic production project. For use in Statistics Norway's Jupyter environment on Dapla.",
+      "has_settings": "n",
+      "has_binder": "y",
+      "test": "y",
+      "repository": "https://github.com/statisticsnorway/dapla-hurtigstart-jupyter-extension",
+      "_template": "https://github.com/jupyterlab/extension-cookiecutter-ts"
+    }
+  },
+  "directory": null
+}
