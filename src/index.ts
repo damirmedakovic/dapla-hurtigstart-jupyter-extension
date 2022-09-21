@@ -9,20 +9,22 @@ import {
   MainAreaWidget
 } from '@jupyterlab/apputils';
 
+import { LabIcon } from '@jupyterlab/ui-components';
+import SSB_LOGO from '../style/icons/ssb-logo.svg'
 import { TerminalManager } from '@jupyterlab/services';
-
 import { Terminal } from '@jupyterlab/terminal';
-
 import { ArgumentsWidget } from './arguments-widget';
-
 import { ILauncher } from '@jupyterlab/launcher';
 
-/**
- * The command IDs used by the Dapla hurtigstart.
- */
 namespace CommandIDs {
   export const create = 'dapla-hurtigstart';
 }
+
+export const ssbIcon = new LabIcon({
+  name: 'dapla:hurtigstart',
+  svgstr: SSB_LOGO
+});
+
 
 /**
  * Initialization data for the Dapla Hurtigstart extension.
@@ -40,15 +42,17 @@ const extension: JupyterFrontEndPlugin<void> = {
       execute: () => {
         showArgumentsDialog(app);
       },
-      isVisible: () => true,
-      iconClass: 'jp-RunIcon',
-      label: 'Skap nytt prosjekt'
+      label: 'Hurtigstart',
+      icon: ssbIcon,
     });
 
+    let launcherItem: ILauncher.IItemOptions = {
+      command: commandId,
+      category: 'Other',
+    };
+
     if (launcher) {
-      launcher.add({
-        command: commandId,
-      });
+      launcher.add(launcherItem);
     }
   },
 };
@@ -70,6 +74,13 @@ export function showArgumentsDialog(
     ],
     body: new ArgumentsWidget()
   });
+
+  var projectName: string = ""
+  var description: string = ""
+  var skip_github: boolean = true
+
+  const hurtigstartArguments = `--projectname ${projectName} --description ${description} --repo-privacy "Internal" ${skip_github ? "--skip-github" : ""}`
+  console.log(hurtigstartArguments)
 
   dialog.then(async object => {
     if (object.button.accept) {
