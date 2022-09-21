@@ -42,7 +42,7 @@ const extension: JupyterFrontEndPlugin<void> = {
       execute: () => {
         showArgumentsDialog(app);
       },
-      label: 'Hurtigstart',
+      label: 'Nytt SSB-prosjekt',
       icon: ssbIcon,
     });
 
@@ -67,36 +67,29 @@ export function showArgumentsDialog(
   app: JupyterFrontEnd,
 ) {
   const dialog = showDialog({
-    title: 'Dapla Hurtigstart',
+    title: 'Opprett nytt SSB-prosjekt',
     buttons: [
-      Dialog.cancelButton({ label: 'Avlys' }),
-      Dialog.createButton({ label: 'Skap prosjekt' }),
+      Dialog.cancelButton({ label: 'Avbryt' }),
+      Dialog.createButton({ label: 'OK' }),
     ],
     body: new ArgumentsWidget()
   });
 
-  var projectName: string = ""
-  var description: string = ""
-  var skip_github: boolean = true
-
-  const hurtigstartArguments = `--projectname ${projectName} --description ${description} --repo-privacy "Internal" ${skip_github ? "--skip-github" : ""}`
-  console.log(hurtigstartArguments)
-
   dialog.then(async object => {
     if (object.button.accept) {
-      if (object.button.label === 'Skap prosjekt') {
+      if (object.button.label === 'OK') {
         console.log('Creating new project');
 
         const manager = new TerminalManager();
         const s1 = await manager.startNew();
         const term1 = new Terminal(s1, {
-          initialCommand: `echo "Miles is the best"`
+          initialCommand: `${object.value}`
         });
         term1.title.closable = true;
 
         const widget = new MainAreaWidget({ content: term1 });
         widget.id = `jupyter-dapla-hurtigstart-${Date.now()}`;
-        widget.title.label = 'Dapla Hurtigstart';
+        widget.title.label = 'Opprett nytt SSB-prosjekt';
         widget.title.closable = true;
 
         if (!widget.isAttached) {
