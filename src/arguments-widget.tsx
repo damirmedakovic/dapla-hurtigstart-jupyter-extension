@@ -10,20 +10,18 @@ import { style } from 'typestyle';
 const wrapperClass = style({
     marginTop: '6px',
     marginBottom: '0',
-
+    float: 'left',
     borderBottom: 'var(--jp-border-width) solid var(--jp-border-color2)'
 });
 
 const filterInputClass = style({
     boxSizing: 'border-box',
 
-    width: '100%',
+    // width: '100%',
     height: '2em',
 
     /* top | right | bottom | left */
     padding: '1px 18px 2px 7px',
-
-    alignItems: 'left',
 
     color: 'var(--jp-ui-font-color1)',
     fontSize: 'var(--jp-ui-font-size1)',
@@ -52,22 +50,24 @@ export class ArgumentsWidget extends ReactWidget {
     }
 
     getValue(): string {
-        return `poetry run python3 ~/hack_2022/hack2022-dapla-hurtigstart/typing-cli/hurtigstart_cli.py create \
-        --projectname ${this._projectName} \
-        --description ${this._projectDescription} \
-        --repo-privacy "Internal" \
-        ${this._pushToGithub ? "" : "--skip-github"} \
-        --token ${this._usersGithubToken}`;
+        console.log(`Argument values: \n${"this._projectName = " + this._projectName}\n${"this._pushToGithub = " + this._pushToGithub}\n${"this._usersGithubToken = " + this._usersGithubToken}`)
+        return `\
+ssb-project create \
+${this._projectName} \
+"${this._projectDescription}" \
+"internal" \
+${this._pushToGithub ? '' : '--skip-github'} \
+${this._usersGithubToken === '' ? '' : '--github-token ' + this._usersGithubToken}`;
     }
 
-    private _linkToDocs = 'https://github.com/statisticsnorway/stat-hurtigstart-template-master/blob/main/%7B%7Bcookiecutter.project_name%7D%7D/README.md'
+    private _linkToDocs = 'https://statisticsnorway.github.io/ssb-project-website/'
 
     protected render(): React.ReactElement<any> {
         return (
             <div className={wrapperClass}>
                 <div style={divStyle}>
-                    <p>Oppretter et nytt prosjekt som følger beste praksis for programmering på Dapla. </p>
-                    <a href={this._linkToDocs}> Les mer her.</a>
+                    <p>Oppretter et nytt prosjekt som følger beste praksis for programmering på Dapla.&nbsp;</p>
+                    <a href={this._linkToDocs}>Les mer her.</a>
                 </div>
                 <br></br>
                 <br></br>
@@ -105,7 +105,7 @@ export class ArgumentsWidget extends ReactWidget {
                         required={true}
                         className={filterInputClass}
                         onChange={e => {
-                            this._pushToGithub = e.target.value === "true";
+                            this._pushToGithub = e.target.value === 'on';
                             this._signal.emit();
                         }}
                     />
